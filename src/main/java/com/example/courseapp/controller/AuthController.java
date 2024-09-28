@@ -1,8 +1,8 @@
 package com.example.courseapp.controller;
 
 import com.example.courseapp.dto.LoginRequest;
+import com.example.courseapp.dto.OtpVerificationRequest;
 import com.example.courseapp.dto.RegistrationRequest;
-import com.example.courseapp.dto.OtpVerificationRequest;  // Create this DTO
 import com.example.courseapp.service.UserService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

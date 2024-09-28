@@ -1,13 +1,10 @@
 package com.example.courseapp.repository;
 
-import com.example.courseapp.model.User;
+import com.example.courseapp.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-    Optional<User> findByEmail(String email);
+public interface AddressRepository extends JpaRepository<Address, Long>, JpaSpecificationExecutor<Address> {
 }
