@@ -32,12 +32,11 @@ public class UserService {
 
     private String generateOtp() {
         Random random = new Random();
-        int otp = 100000 + random.nextInt(900000);  // Generates a 6-digit OTP
+        int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
     }
 
     public String registerUser(RegistrationRequest request) throws MessagingException {
-        // Check if the user already exists
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return "User already registered with this email!";
         }
@@ -92,7 +91,7 @@ public class UserService {
                 request.getLastname(),
                 request.getSchoolname(),
                 request.getMobile(),
-                new HashSet<>() // Initialize with an empty set for addresses
+                new HashSet<>()
         );
         user.getRoles().add(roleOpt.get());
         userRepository.save(user);
@@ -100,13 +99,12 @@ public class UserService {
 
         userRepository.save(user);
 
-        // Now add addresses, setting the user for each address
         Set<Address> addresses = request.getAddresses();
         if (addresses != null) {
             for (Address address : addresses) {
-                address.setUser(user); // Link the address to the user
+                address.setUser(user);
             }
-            user.setAddresses(addresses); // Set the addresses in the user object
+            user.setAddresses(addresses);
         }
 
         userRepository.save(user);
@@ -133,13 +131,13 @@ public String verifyOtp(String email, String otp) {
         User user = userOptional.get();
         if (user.getOtp().equals(otp)) {
             user.setIsVerified(true);
-            userRepository.save(user);  // Mark the user as verified
+            userRepository.save(user);
             return "OTP verified successfully!";
         } else {
-            throw new InvalidOtpException("Invalid OTP!");  // Throw custom exception for invalid OTP
+            throw new InvalidOtpException("Invalid OTP!");
         }
     }
-    throw new InvalidOtpException("User not found!");  // Throw custom exception for user not found
+    throw new InvalidOtpException("User not found!");
 }
 
 
@@ -152,7 +150,6 @@ public String verifyOtp(String email, String otp) {
 
         User user = userOptional.get();
 
-        // Check if the user is verified
         if (!user.getIsVerified()) {
             return "User has not verified their email!";
         }

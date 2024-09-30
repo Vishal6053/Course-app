@@ -89,7 +89,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    @JsonIgnore  // Prevent serialization of roles
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     // Constructor for initializing addresses

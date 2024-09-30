@@ -1,4 +1,6 @@
 package com.example.courseapp.service;
+import com.example.courseapp.exception.CourseNotFoundException;
+import com.example.courseapp.exception.DuplicateCourseNameException;
 import com.example.courseapp.model.Course;
 import com.example.courseapp.repository.CourseRepository;
 import com.example.courseapp.specification.CourseSpecification;
@@ -20,28 +22,33 @@ public class CourseService {
         return courseRepository.findAll();
     }
     public void saveCourse(Course course) {
+        if (courseRepository.existsByName(course.getName())) {
+            throw new DuplicateCourseNameException("Course cannot be created as the course with name '" + course.getName() + "' already exists.");
+        }
         courseRepository.save(course);
     }
     public Optional<Course> getCourseById(Long id) {
-        return courseRepository.findById(id);
+        return Optional.ofNullable(courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + id)));
     }
 
+
     public void updateCourse(Long id, Course updatedCourse) {
-        Optional<Course> existingCourse = courseRepository.findById(id);
-        if (existingCourse.isPresent()) {
-            Course course = existingCourse.get();
-            course.setName(updatedCourse.getName());
-            course.setDescription(updatedCourse.getDescription());
-            course.setDuration(updatedCourse.getDuration());
-            course.setTags(updatedCourse.getTags());
-            course.setTeachername(updatedCourse.getTeachername());
-            course.setFee(updatedCourse.getFee());
-            courseRepository.save(course);
-        }
+        Course existingCourse = courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + id));
+        existingCourse.setName(updatedCourse.getName());
+        existingCourse.setDescription(updatedCourse.getDescription());
+        existingCourse.setDuration(updatedCourse.getDuration());
+        existingCourse.setTags(updatedCourse.getTags());
+        existingCourse.setTeachername(updatedCourse.getTeachername());
+        existingCourse.setFee(updatedCourse.getFee());
+        courseRepository.save(existingCourse);
     }
 
     public void deleteCourse(Long id) {
-        courseRepository.deleteById(id);
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + id));
+        courseRepository.delete(course);
     }
 
     public List<Course> filterCourses(String name, String tag, String teacherName) {

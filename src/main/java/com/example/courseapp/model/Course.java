@@ -2,6 +2,7 @@ package com.example.courseapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,18 +20,23 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Course name cannot be blank.")
     @Column(nullable = false, unique = true)
     private String name;
 
+    @NotBlank(message = "Course duration cannot be blank.")
     @Column(nullable = false)
     private String duration;
 
+    @NotBlank(message = "Course description cannot be blank.")
     @Column(nullable = false)
     private String description;
 
+    @NotBlank(message = "Course tags cannot be blank.")
     @Column(nullable = false)
     private String tags;
 
+    @NotBlank(message = "Teacher name cannot be blank.")
     @Column(nullable = false)
     private String teachername;
 

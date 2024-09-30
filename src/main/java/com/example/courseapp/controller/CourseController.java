@@ -2,6 +2,7 @@ package com.example.courseapp.controller;
 
 import com.example.courseapp.model.Course;
 import com.example.courseapp.service.CourseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
     @PostMapping
-    public ResponseEntity<String> createCourse(@RequestBody Course course) {
+    public ResponseEntity<String> createCourse(@Valid @RequestBody Course course) {
         courseService.saveCourse(course);
         return ResponseEntity.status(201).body("Course created successfully");
     }
